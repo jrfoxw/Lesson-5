@@ -7,12 +7,17 @@ class Validation(object):
     def __init__(self, *args, **kwargs):
         self.validate_this = dict(kwargs)
         self.validate_property = args
+        # init error code #
         self.error_code = False
+        # min and max size of username #
         self.min_user = 4
         self.max_user = 10
+        # min and maz size of tags #
         self.min_tag = 10
         self.max_tag = 30
+        # min size of pass #
         self.min_pass = 3
+         # illegal char list for psuedo validation #
         self.illegal_chars = ['{', '}', '\\',
                               '%', '=', '|', '$', '#',
                               '^', '@', '[', ']']
