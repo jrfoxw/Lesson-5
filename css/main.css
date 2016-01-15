@@ -1,0 +1,337 @@
+
+body {
+    margin: 0;
+    background-color: #050A2D;
+    color: #A7CC08;
+    font-family: 'Open Sans', sans-serif;
+    height: 30%;
+    overflow: hidden;
+    background-image: url("/images/dragonhd.jpg");
+
+}
+
+.content{
+    padding: 15px;
+    margin-top: 100px;
+}
+
+#tagline_register{
+    width: 250px;
+    height: 50px;
+    resize: none;
+}
+
+input:hover{
+    border: blue 1px solid;
+    margin: 1px;
+}
+
+
+
+img {
+    border: 2px solid white;
+    width: 140px;
+    height: 120px;
+    margin-left: 5px;
+}
+
+
+.small_image{
+    box-shadow: 5px 3px 15px black;
+    width: 60px;
+    height: 80px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-right: 3px;
+}
+
+
+.micro_image{
+    box-shadow: 5px 3px 15px black;
+    width: 50px;
+    height: 54px;
+    position: absolute;
+    top: 4px;
+    left: -61px;
+
+}
+
+th, td{
+    padding: 5px;
+    vertical-align: top;
+
+
+}
+
+h2{
+    margin: auto;
+}
+
+a{
+
+    padding: 2px;
+    text-decoration: none;
+    color: #8CAB0B;
+}
+
+nav > a:link{
+    color: #A7CC08;
+}
+
+
+a:hover{
+    color: #A7CC08;
+
+}
+
+
+#divider{
+    width: 100%;
+    margin: auto;
+    background: white;
+    height: 10px;
+}
+
+table{
+    margin: auto;
+    table-layout: fixed;
+    margin-bottom: 20px;
+}
+
+#error{
+    color: red;
+    background-color: black;
+}
+
+.header{
+        background-color: #111D65;
+        position: fixed;
+        width: 100%;
+        height: 80px;
+        top: 0;
+        margin-bottom: 50px;
+}
+
+.logo_wrap{
+
+        padding: 5px;
+        width: 270px;
+
+}
+
+
+.logo{
+    background-size: 80px;
+    font-family: 'Cinzel', serif;
+    font-size: 27px;
+    color: #A7CC08;
+    border-bottom: white 6px inset;
+    border-top: white 5px outset;
+    border-radius: 15px;
+    text-align: center;
+
+
+}
+
+
+.welcome{
+    position: absolute;
+    background-color: rgba(24,41,146,0.46);
+    box-shadow: 5px 5px 15px black;
+    top: 0;
+    right: 45px;
+    height: 67px;
+    width: 184px;
+    font-family: 'Cinzel', serif; 
+    border-radius: 15px;
+
+}
+
+
+#inner_welcome{
+    position: absolute;
+    top: 16px;
+    right: 5px;
+}
+
+.login{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 84px;
+    margin-top: 10px;
+    
+
+}
+
+
+.sidebar-left{
+    position: absolute;
+    left: 0;
+
+    height: 500px;
+    width: 100px;
+
+
+    border: 5px solid gray;
+}
+
+
+.notes > li {
+    display: inline;
+    float: left;
+    width: 90px;
+}
+
+
+ul{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+/* FIXES NAV BAR IN PLACE */
+.ulnav{
+    display: inline-flex;
+    margin-top: 75px;
+    background-color: #0A134C;
+    position:fixed;
+    top:0;
+    width:100%;
+
+}
+
+.navs{
+    display: inline-flex;
+    margin-right: 150px;
+    margin: auto;
+    width: 55%;
+    height: 25px;
+}
+
+.navs > li{
+
+
+    width: 180px;
+    border-top: green 1px solid;
+    border-bottom: green 2px solid;
+    border-radius: 15px;
+    text-align: center;
+
+}
+
+.navs > li:hover {
+    width: 180px;
+    border-top: #069450 2px solid;
+    border-bottom: #069450 3px solid;
+    border-radius: 15px;
+    text-align: center;
+}
+
+
+
+.nav-right{
+    float: right;
+    width: 55%;
+    padding: 5px;
+    list-style-type: none;
+}
+
+
+
+.notes_wrap{
+    width: 900px;
+    margin: auto;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    overflow: hidden;
+}
+
+.main{
+    margin: auto;
+    padding: 20px;
+    margin-bottom: 100px;
+    margin-top: 130px;
+    width: 50%;
+    background-color: #0A134C;
+    height: 350px;
+    font-family: 'Cinzel', serif ;
+
+
+}
+
+
+.notes{
+    margin-bottom: 2px;
+    padding: 10px;
+    height: 500px;
+    overflow: auto;
+}
+
+
+.def_wrap{
+    margin: auto;
+    padding: 20px;
+    margin-bottom: 100px;
+    margin-top: 10px;
+    width: 70%;
+    height: 500px;
+}
+
+.defs{
+    padding: 5px;
+    margin-top: 130px;
+    margin: auto;
+
+
+}
+
+.def_entry{
+    margin: 20px 70px 50px;
+    background-color: #0A134C;
+    padding: 20px;
+
+}
+
+
+.def_layout{
+    margin-left: 50px;
+    overflow: auto;
+    height: 280px;
+    width: 90%;
+}
+
+
+
+
+#css3_w3{
+    width: 88px;
+    height: 31px;
+}
+
+
+.footer{
+    margin: auto;
+    margin-top: 95px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 58px;
+    background-color: #0A134C;
+    padding-top: 1px;
+    position: fixed;
+    z-index: -2;
+    text-align: center;
+
+}
+
+#js_logout {
+    border: 2px solid red;
+    position: relative;
+    top: 39px;
+    right: -59px;
+
+}

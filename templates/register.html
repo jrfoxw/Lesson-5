@@ -1,0 +1,43 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+
+{% block login %}
+
+{% block logout %}
+{% endblock logout %}
+
+{% endblock login %}
+
+<div class="main">
+    <h2>Register</h2>
+    <hr>
+    <span id='error'>{{error}}</span>
+    <br>
+    <form method="post" action="/register.html">
+        
+        <br>
+        <label>Username:</label>
+        <br>
+        <input type="text" name="username" value="{{ username }}">
+        <br>
+        <label>Password</label>
+        <br>
+        <input type="password" name="password">
+        <br>
+        <label>Avatar</label>
+        <br>
+        <input type="text" name="avatar" value="{{ avatar }}">
+        <br>
+        <label >Tagline:</label>
+
+        <br>
+        <textarea id="tagline_register" name="tagline" >{{ tagline }}</textarea>
+        <br>
+        <input type="submit" value='register'>
+    </form>
+</div>
+
+{% endblock %}
+

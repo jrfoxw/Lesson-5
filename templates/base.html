@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Dragon Tamers</title>
+        {% block head %}
+            <link rel="stylesheet" type="text/css" href="css/main.css">
+            <link rel="stylesheet" type="text/css" href="css/forum.css">
+            <link href='https://fonts.googleapis.com/css?family=Cinzel|Open+Sans' rel='stylesheet' type='text/css'>
+        {% endblock %}
+    </head>
+    <body>
+        
+        <div class="bg">
+
+            <div class="header">
+            {% block header %}
+                <div class="logo_wrap">
+                    <div class="logo">The Dragons Cave</div>
+
+                </div>
+                    
+                    {% block login %}
+                    {% if login %}
+                    <div class="welcome">
+                        <div id='inner_welcome'> Welcome {{ user }}</div>
+                        
+                        <img class="micro_image"src='{{ u_image }}'>
+                        {% block logout %}
+                        <form method='post' action='#' class='logout'>
+                            <input type='hidden' name='logout'>
+                            <!-- will implement javascript button for lesson 5 -->
+                            <!-- currently button only "works" on Home link -->
+                            <input id='js_logout' type='submit' value='logout' onclick=''>
+                        </form>
+                        {% endblock logout %}
+                    </div>
+                    {% else %}
+                    
+                    <div class ="login">
+                        
+                        <form method="post" action="/">
+                        <table>
+                            <tr>
+                                <td><label>User:</label></td>
+                                <td><input type="text" name="username"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><label>Pass:</label></td>
+                                <td><input type="password" name="password"></td>
+                                <td><input type="submit" value="login"></td>
+                            </tr>        
+                        </table>
+                    </form>
+                        
+                    {% endif %}
+                    </div>
+                    {% endblock login %}
+            {% endblock %}
+            </div>
+                <div class="ulnav">
+                    {% block navigation %}
+                        <ul class='navs'>
+
+                            <li><a href="/">HOME</a></li>
+                            <li><a href="forum.html">FORUM</a></li>
+                            <li><a href="notes.html">NOTES</a></li>
+                            <li><a href="definitions.html">DEFINITIONS</a></li>
+                            <li><a href="register.html" >REGISTER</a></li>
+
+                    {% endblock %}
+                        </ul>
+                </div>
+                    <div class="content">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+            </div>
+            <div class="footer">
+                {% block footer %}
+                 <p>
+                    <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                    <img id='css3_w3' src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!" />
+                    </a>
+                </p>
+                {% endblock %}
+            </div>
+    </body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+}
+{% block content %}
+
+<div class="main">
+<h2>WELCOME TO THE DRAGONS CAVE</h2>
+<b> Latest Post!</b>
+<br>
+	<div id='latest_post'>
+		<table>
+		{% for post in latest_post %}
+
+		    <tr>
+		    	<td>{{ post.poster }}</td>
+		    </tr>
+		    <tr>
+		    	<td><img class='small_image' src='{{post.avatar}}'></td>
+		    	<td>&quot;{{ post.post }}&quot;<td>
+		    </tr>
+		    <br>
+		    
+		 </table>   
+	</div>
+
+	{% endfor %}
+    <br>
+{% if login %}
+    <b> <i>{{ user }}</i> is logged in!</b>
+    
+    
+{% else %}
+    <b> Please login or <a href="/register.html">register</a> to continue!</b>
+{% endif %}
+	<br>
+	<span id='error'> {{ error }} </span> 
+</div>
+{% endblock %}

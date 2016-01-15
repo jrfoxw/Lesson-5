@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+{% block logout %}
+{% endblock logout %}
+<div class="notes_wrap">
+    <h2>NOTES FOR REVIEW OF SECTION 4</h2>
+    <div class="notes">
+
+        <br>
+        <h3>Client/Servers</h3>
+        <p>
+           A Client communicates with a server via sending a <i>get</i> or <i>post</i> command which
+           is then used by the server to respond with the contents of what was asked for.<br>
+           Example:
+            <ol>
+                 <li>Client communicates with server via a protocol like HTTP.</li>
+                 <li>The Client uses a get request for whatever object it is requesting.</li>
+                 <li>Server takes the request and returns the object that the client has requested.</li>
+            </ol>
+        </p>
+        <h3>Validation</h3>
+        <p>
+            Validation is extremely important in this day and age, especially on the web. Without Validation
+            there would be no security on websites. Validating a users input is important for several reasons.
+           <ol>
+                <li>Users can enter malicious code which can change the way a website works</li>
+                <li>Import information stored on a server (credit card info, SSN, ect) could easily be compromised</li>
+                <li>Without proper authentication and validation the web would not be a safe place.</li>
+           </ol>
+        </p>
+        <h3>HTML Templates</h3>
+        <p>
+            I've used python/Django several times in the past, and I can say, without a doubt that templating is
+            probably the most powerful way to save a ton of time, or rather keep yourself DRY. HTML templates can
+            make what would normally be a very difficult job much easier to complete.
+            <ol>
+                <li>You create one base template and then extend on that</li>
+                <li>It limits the amount of html/code that you have type</li>
+                <li>To change headers or footers all you do is change the base template.</li>
+            </ol>
+        </p>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+

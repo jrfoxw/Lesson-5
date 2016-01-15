@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+{% block logout %}
+{% endblock logout %}
+<div class="def_wrap">
+<h2>DEFINITIONS</h2>
+        <div class="def_layout">
+
+            <table class="defs">
+
+            {% for defined in wordlist%}
+             <tr>
+                <td>{{defined.word}}</td>
+                <td style="font-size: 15px;"><i>{{defined.definition}}</i></td>
+             </tr>
+            {% endfor %}
+        </table>
+        </div>
+
+
+    
+    <form method="post" action="/definitions.html">
+        <div class="def_entry">
+            <span id='error'>{{error}}</span><br>
+            <b> Enter new definitions below</b>
+                <br>
+                <label>Word:</label>
+                <br>
+                <input type="text" name="word">
+                <br>
+                <label>Definition:</label>
+                <br>
+                <textarea name="definition" rows="5" cols="76"></textarea>
+            <br><input type="submit">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
