@@ -4,56 +4,102 @@
 
     {% if login %}
     
-    <div class='forum-info' class='forum'>
-        <span> Total Posts: {{ total_posts }}</span>
-    </div>
-    <div class="forum">
+        <!--<div class='forum-info forum'>-->
+        <!--<span> Total Posts: {{ total_posts }}</span>-->
+    <!--</div>-->
+     <!--<div class="forum_post_entry">-->
+         <!--<br>-->
 
-        <table >
+
+        <!--<form method="post" action="/forum.html">-->
+            <!--<table>-->
+                <!--<tr>-->
+                    <!--<td colspan='2'><span id='error'>{{ error }}</span></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Subject:</td><td><input id='post_sub' type='text' name='subject'></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Post:</td><td><textarea class="post_area" name="post"  ></textarea></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td></td><td colspan='2'><input type="submit" value="POST"></td>-->
+                <!--</tr>-->
+            <!--</table>-->
+        <!--</form>-->
+    <!--</div>-->
+    
+
+       
 {% block logout %}
 {% endblock logout %}
 
+   <input id='flashed' type=text value='flash()'>
+<div class="forum">
+ 
 
-{% for data in post_list %}
+        {% for data in post_list %}
+        {% for subs in subjects %}
+            
 
+            
+
+
+
+        
+            
+        {% if subs.subject == data.subject %}
+
+            <li class='subj_list' id='{{ data.subject_id }}'>
+                {{ subs.subject }}
+
+            </li>
+        {% endif %}
+    {% if subs.subject_id == data.subject_id %}
+        <table id='forum_table'>
             <tr>
                 <td colspan="3"></td>
             </tr>
             <tr>
-                <td id="forum_name" class="forum_layout">{{data.poster}}</td>
+                <td id="forum_name" class="td_lt td_lr td_ll">{{data.poster}}</td>
                  <td></td>
                   <td id="forum_data_time">{{data.date}}</td>
             </tr>
             <tr>
-                <td id="forum_avatar" class="forum_layout">
-                    <img src="{{data.avatar}}"/>
-                     <td></td>
+                <td id="forum_avatar" class="td_lr td_ll white_div">
+
+                    <img id="forum_avatar_img" src="{{data.avatar}}"/>
+
+                     </td>
+                     <td>
                 </td>
                 <td class="forum_post" rowspan="2">{{data.post}}</td>
             </tr>
             <tr>
-                <td id="tagline"><i>&quot;{{ data.tag }}&quot;</i></td>
+                <td id="tagline" class='td_lb td_lr td_ll'><i>&quot;{{ data.tag }}&quot;</i></td>
             </tr>
+            <tr>
+                <td></td> <td></td>
+                <td>
+                    <form method='POST' action='/forum.html'>
+                        <input type=text name='post'>
+                        <input type=hidden name ='subject_id' value='{{data.subject_id}}'>
+                        <input type=submit value='comment'>
 
-{% endfor %}
+                    </form>
+                </td>
+            </tr>
+            </table>
 
-        </table>
 
+                {% endif %} 
+            {% endfor %}
+        {% endfor %} 
+        
+    
     </div>
     
-    <div class="forum_post_entry">
-         <br>
-
-        <form method="post" action="/forum.html">
-
-            <span id='error'>{{ error }}</span>
-            <label>Enter Post</label>
-            <br>
-            <textarea class="post_area" name="post"  ></textarea>
-            <br>
-            <input type="submit" value="POST">
-        </form>
-    </div>
+    
     {% else %}
         <b> Please login or <a href="/register.html">register</a> to continue!</b>
     {% endif %}

@@ -6,7 +6,34 @@ body {
     font-family: 'Open Sans', sans-serif;
     height: 30%;
     overflow: hidden;
-    background-image: url("/images/dragonhd.jpg");
+    /*background-image: url("/images/dragonhd.jpg");*/
+
+}
+
+.innerlinks{
+    /*border: 2px green solid;*/
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+
+
+}
+
+.ilinks{
+    padding-right: 15px ;
+    text-decoration: underline;
+}
+
+
+.sections{
+    margin-bottom: 0px;
+    border-left: 9px #050a2d dashed;
+    /* border-bottom: 4px #050a2d dotted; */
+    padding: 15px;
+    height: 476px;
+    overflow: auto;
+    background: #FBFBFB;
+    color: #000000;
 
 }
 
@@ -29,10 +56,10 @@ input:hover{
 
 
 img {
-    border: 2px solid white;
-    width: 140px;
-    height: 120px;
-    margin-left: 5px;
+    /*border: 2px solid white;*/
+    width: 80px;
+    height: 60px;
+    /*margin-left: 5px;*/
 }
 
 
@@ -267,7 +294,7 @@ ul{
     margin-bottom: 2px;
     padding: 10px;
     height: 500px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 

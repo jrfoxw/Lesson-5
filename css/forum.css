@@ -2,7 +2,7 @@
 
 
 .forum{
-    margin: auto;
+    /*margin: auto;
     margin-top: 10px;
     background-color: #0A134C;
     overflow: auto;
@@ -10,12 +10,69 @@
     padding: 5px;
     border: 10px solid rgba(125,156,34,.2);
     width: 50%;
+*/
+    margin: auto;
+    margin-top: 10px;
+    background-color: #0A134C;
+    overflow: auto;
+    height: 500px;
+    padding: 15px;
 
+    /* border: 10px solid rgba(125,156,34,.2); */
+    width: 50%;
+    display: block;
+}
+
+/*td,th{
+    border: 1px solid red;
+}
+*/
+.td_lt{
+    border-top: 2px gray solid;
+
+}
+
+.td_lb{
+    border-bottom: 2px gray solid;
+}
+
+.td_lr{
+    border-right: 2px gray solid;
+}
+
+.td_ll{
+    border-left: 2px gray solid;
+
+}
+
+.white_div{
+
+    background-color: white;
+}
+
+#forum_table{
+    margin-bottom: 120px;
+    /*border: 2px solid green;*/
+    padding: 5px;
+    
 }
 
 .forum_post_entry{
     margin: auto;
     width: 30%;
+}
+
+.subj_list{
+    width: 100%;
+    background-color: rgba(23,36,122,0.7);
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-bottom: 2px black dotted;
+    border-radius: 15px;
+    list-style: none;
+    margin: auto;
 }
 
 
@@ -43,19 +100,38 @@
     border-radius: 5px;
 }
 
+
+#post_sub{
+    width: 451px;
+
+}
+
 .post_area{
     width: 450px;
-    height: 125px;
+    height: 85px;
     resize: none;
 }
 
 
+.avatar_div{
+   /* background-color: white;*/
+    /*width: 100%;*/
+
+}
+
+#forum_avatar_img{
+    height: 80;
+    width: 70;
+    border: 2px black solid;
+    /*border: 3px black dotted;*/
+}
+
 #forum_avatar{
-    height: 15px;
-    width: 15px;
-    vertical-align: top;
-    text-align: center;
-    padding: 0px;
+    /*height: 5px;
+    width: 5px;*/
+    /*vertical-align: top;*/
+    /*text-align: center;*/
+    /*padding: 1px;*/
 }
 
 .forum_post{
@@ -63,7 +139,7 @@
     border-radius: 5px;
     background-color: #17247A;
     width: 504px;
-    height: 220px;
+    height: 20px;
     margin-left: 20px;
     margin-top: 10px;
     padding: 25px;

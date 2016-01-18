@@ -30,6 +30,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(template_d
                                        extensions=['jinja2.ext.autoescape'])
 
 
+
 # MODELS #
 class Users(ndb.Model):
     # Model for Users #
@@ -40,8 +41,16 @@ class Users(ndb.Model):
     date = ndb.DateTimeProperty(auto_now_add=True)
 
 
+class Subject_Main(ndb.Model):
+    # Top level subject for forums #
+    subject = ndb.StringProperty()
+    subject_id = ndb.IntegerProperty()
+
+
 class ForumPost(ndb.Model):
     # Model for Forum Posts #
+    subject = ndb.StringProperty()
+    subject_id = ndb.IntegerProperty()
     poster = ndb.StringProperty()
     post = ndb.StringProperty()
     tag = ndb.StringProperty()
@@ -185,13 +194,15 @@ class ForumPage(Handler):
 
     def get(self):
         posts = ForumPost.query().order(ForumPost.date).fetch()
+        subjects = Subject_Main.query().order(Subject_Main.subject_id).fetch()
         total_posts = len(posts)
         if ForumPage.error is False:
             # looks good process page #
             debug('Total posts = {}'.format(total_posts))
             self.render("/forum.html",
                         post_list=posts,
-                        login=Base.login,
+                        subjects=subjects,
+                        login=True,
                         user=Base.current_user,
                         u_image=Base.current_avatar,
                         total_posts=total_posts)
@@ -200,7 +211,8 @@ class ForumPage(Handler):
             # errors on page so will show error flag #
             self.render("/forum.html",
                         post_list=posts,
-                        login=Base.login,
+                        subjects=subjects,
+                        login=True,
                         user=Base.current_user,
                         u_image=Base.current_avatar,
                         error=ForumPage.error,
@@ -210,6 +222,19 @@ class ForumPage(Handler):
 
     def post(self):
         # get current registered user and post #
+
+        # test to see if subject has already been posted #
+        # if so add current post under that subject title and unique_id #
+        # and update the current Base unique_id #
+
+        if self.request.get('subject_id') == '':
+            debug(' New subject_id  ')
+            subject_id = Base().set_post_id()
+        else:
+            debug(' Found subject_id ')
+            subject_id = self.request.get('subject_id')
+
+        subject = cgi.escape(self.request.get("subject"))
         post = cgi.escape(self.request.get("post"))
         poster = Base.current_user
         tag = Base.current_tag
@@ -218,7 +243,15 @@ class ForumPage(Handler):
 
         if post:
             # looks good add post to database #
-            forum_post = ForumPost(post=post, poster=poster, tag=tag, avatar=avatar)
+            subject_add = Subject_Main(subject=subject, subject_id=int(subject_id))
+            subject_add.put()
+            debug('--Subject added--')
+            forum_post = ForumPost(subject_id=int(subject_id),
+                                   subject=subject,
+                                   post=post,
+                                   poster=poster,
+                                   tag=tag,
+                                   avatar=avatar)
             forum_post.put()
             debug('Post added--')
             # for local #
@@ -277,17 +310,38 @@ class MainPage(Handler):
 class Base(Handler):
     # Base Template Handler #
     query_users = Users.query()
+    subj_unique_id = 1000
     # Initialize base user info #
     login = False
     current_user = ''
     current_tag = ''
     current_avatar = ''
-    
+
+    navs_list ={'HOME': '/', 'FORUM': 'forum.html',
+                'NOTES': 'notes.html', 'DEFINITIONS': 'definitions.html',
+                'REGISTER': 'register.html', 'DICE': 'dice.html'}
+
     def get(self):
         self.render("base.html", login=Base.login)
 
     def post(self):
         pass
+
+    def set_post_id(self):
+        # sets unique id #
+        # get latest post #
+        post_id = ForumPost.query().order(-ForumPost.date).fetch(1)
+        # check to see if there is a subject_id #
+        if post_id[0].subject_id >= 1000:
+            p_id = post_id[0].subject_id
+            p_id += 1
+            debug('post_id {}'.format(p_id))
+            return p_id
+        # if not set to default of subj_unique_id #
+        # should only run once !! #
+        else:
+            p_id = Base.subj_unique_id
+            return p_id
 
 
 router = [('/', MainPage),
