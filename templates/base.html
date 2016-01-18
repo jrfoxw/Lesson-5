@@ -68,13 +68,17 @@
                     {% block navigation %}
                         <ul class='navs'>
 
-                            <li><a href="/">HOME</a></li>
-                            <li><a href="forum.html">FORUM</a></li>
-                            <li><a href="notes.html">NOTES</a></li>
-                            <li><a href="definitions.html">DEFINITIONS</a></li>
-                            <li><a href="register.html" >REGISTER</a></li>
-                            <li><a href="dice.html">DICE</a></li>
+                            <!--<li><a href="/">HOME</a></li>-->
+                            <!--<li><a href="forum.html">FORUM</a></li>-->
+                            <!--<li><a href="notes.html">NOTES</a></li>-->
+                            <!--<li><a href="definitions.html">DEFINITIONS</a></li>-->
+                            <!--<li><a href="register.html" >REGISTER</a></li>-->
+                            <!--<li><a href="dice.html">DICE</a></li>-->
 
+                            {% for navs in navs_list %}
+
+                            <li><a href="{{ navs[1] }}"> {{ navs[0] }} </a></li>
+                            {% endfor %}
                     {% endblock %}
                         </ul>
                 </div>

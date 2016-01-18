@@ -88,6 +88,12 @@ class Handler(webapp2.RequestHandler):
         self.write(self.render_str(template, **kwargs))
 
 
+class DiceRoller(Handler):
+    def get(self):
+        self.render('dice.html', navs_list=Base.navs_list)
+
+
+
 class Register(Handler):
     # register user into database, check for possible invalid entries #
     error = False
@@ -100,7 +106,7 @@ class Register(Handler):
             # show error flag, then reset #
             self.render("register.html", error=Register.error,
                         username=Base.current_user, avatar=Base.current_avatar,
-                        tagline=Base.current_tag)
+                        tagline=Base.current_tag,navs_list=Base.navs_list)
             Register.error = False
 
     def post(self):
@@ -155,10 +161,10 @@ class Definition(Handler):
         if Definition.error:
             self.render("definitions.html", wordlist=word_list, login=Base.login,
                         user=Base.current_user, u_image=Base.current_avatar,
-                        error=Definition.error)
+                        error=Definition.error,navs_list=Base.navs_list)
         else:
             self.render("definitions.html",  wordlist=word_list, login=Base.login,
-                        user=Base.current_user, u_image=Base.current_avatar)
+                        user=Base.current_user, u_image=Base.current_avatar,navs_list=Base.navs_list)
 
     def post(self):
         word = cgi.escape(self.request.get('word'))
@@ -185,7 +191,7 @@ class NotesData(Handler):
     def get(self):
         user = Base.current_user
         self.render("notes.html", login=Base.login,
-                    user=user, u_image=Base.current_avatar,)
+                    user=user, u_image=Base.current_avatar,navs_list=Base.navs_list)
 
 
 class ForumPage(Handler):
@@ -205,7 +211,8 @@ class ForumPage(Handler):
                         login=True,
                         user=Base.current_user,
                         u_image=Base.current_avatar,
-                        total_posts=total_posts)
+                        total_posts=total_posts,
+                        navs_list=Base.navs_list)
 
         else:
             # errors on page so will show error flag #
@@ -216,7 +223,8 @@ class ForumPage(Handler):
                         user=Base.current_user,
                         u_image=Base.current_avatar,
                         error=ForumPage.error,
-                        total_posts=total_posts)
+                        total_posts=total_posts,
+                        navs_list=Base.navs_list)
             # error being shown, so reset error flag #
             ForumPage.error = False
 
@@ -271,14 +279,18 @@ class MainPage(Handler):
     def get(self):
         # test to see if registered user is or is not logged in #
         latest_post = ForumPost.query().order(-ForumPost.date).fetch(1)
+        debug('Navs_List = {}'.format(Base.navs_list))
         if Base.login is False:
-            self.render("index.html", login=False, latest_post=latest_post, error=MainPage.error)
+            self.render("index.html", login=False, latest_post=latest_post,
+                        error=MainPage.error, navs_list=Base.navs_list)
+
         else:
             self.render("index.html",
                         login=True,
                         user=Base.current_user,
                         u_image=Base.current_avatar,
-                        latest_post=latest_post)
+                        latest_post=latest_post,
+                        navs_list=Base.navs_list)
 
     def post(self):
 
@@ -317,12 +329,13 @@ class Base(Handler):
     current_tag = ''
     current_avatar = ''
 
-    navs_list ={'HOME': '/', 'FORUM': 'forum.html',
-                'NOTES': 'notes.html', 'DEFINITIONS': 'definitions.html',
-                'REGISTER': 'register.html', 'DICE': 'dice.html'}
+    navs_list = [('HOME','/'), ('FORUM', 'forum.html'),
+                 ('NOTES', 'notes.html'), ('DEFINITIONS', 'definitions.html'),
+                 ('REGISTER', 'register.html'), ('DICE', 'dice.html')]
 
     def get(self):
         self.render("base.html", login=Base.login)
+
 
     def post(self):
         pass
@@ -345,6 +358,7 @@ class Base(Handler):
 
 
 router = [('/', MainPage),
+          ('/dice.html', DiceRoller),
           ('/notes.html', NotesData),
           ('/definitions.html', Definition),
           ('/register.html', Register),
