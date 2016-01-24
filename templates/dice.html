@@ -1,7 +1,58 @@
 {% extends "base.html" %}
+
+{% block logout %}
+{% endblock logout %}
 {% block content %}
 
+<table>
+    <tr class="">
+        <td id='instructions' rowspan="5"><h3>SWORD SHIELD BOOK</h3>
+        <br>
+            <u>RULES</u>
+            <p>
+            All matching tiles cancel each other out.
+            10 wins, wins the game.
+                <ul>
+                    {% for game_image in game_images %}
+                        <li><img class="game_icons" src="/images/{{ game_image[0] }}"> BEATS
+                            <img class="game_icons" src="/images/{{ game_image[1] }}"></li>
+                    {% endfor %}
+                    <li>Press roll to start game.</li>
+                    <li>Press reset to reset game.</li>
+                </ul>
+            </p>
+        </td>
+    </tr>
+    <tr>
+    <td class="players" colspan="2">PLAYER</td><td></td><td id="pscore" class="">0</td>
+
+    </tr>
+    <tr>
+
+        <td id="p1" class="squares"> </td>
+        <td id="p2" class="squares"> </td>
+        <td id="p3" class="squares"> </td>
+
+    </tr>
+    <!---->
 
 
 
+
+
+    <td class="players" colspan="2">CPU</td><td></td><td id="cscore" class="">0</td>
+    <!---->
+    <tr >
+
+        <td id="c1" class="squares"> </td>
+        <td id="c2" class="squares"> </td>
+        <td id="c3" class="squares"> </td>
+    </tr>
+</table>
+
+<table>
+<tr id="roll_buttons_back" >
+     <td id='b0' class="buttons b-int">RESET</td><td id="b1" class="buttons b-int">ROLL</td><td></td>
+ </tr>
+</table>
 {% endblock %}

@@ -30,6 +30,8 @@ JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(template_d
                                        extensions=['jinja2.ext.autoescape'])
 
 
+set_time = .02
+
 
 # MODELS #
 class Users(ndb.Model):
@@ -39,12 +41,6 @@ class Users(ndb.Model):
     link = ndb.StringProperty()
     tagline = ndb.StringProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
-
-
-class Subject_Main(ndb.Model):
-    # Top level subject for forums #
-    subject = ndb.StringProperty()
-    subject_id = ndb.IntegerProperty()
 
 
 class ForumPost(ndb.Model):
@@ -90,8 +86,11 @@ class Handler(webapp2.RequestHandler):
 
 class DiceRoller(Handler):
     def get(self):
-        self.render('dice.html', navs_list=Base.navs_list)
-
+        game_images = [('sword3.png','magic.png'),
+                       ('shield.png','sword3.png'),
+                       ('magic.png','shield.png')]
+        self.render('dice.html', navs_list=Base.navs_list,
+                    game_images=game_images)
 
 
 class Register(Handler):
@@ -101,12 +100,12 @@ class Register(Handler):
     def get(self):
         # any errors flagged? #
         if Register.error is False:
-            self.render("register.html")
+            self.render("register.html", navs_list=Base.navs_list)
         else:
             # show error flag, then reset #
             self.render("register.html", error=Register.error,
                         username=Base.current_user, avatar=Base.current_avatar,
-                        tagline=Base.current_tag,navs_list=Base.navs_list)
+                        tagline=Base.current_tag, navs_list=Base.navs_list)
             Register.error = False
 
     def post(self):
@@ -137,7 +136,7 @@ class Register(Handler):
                              link=avatar,
                              tagline=tagline)
             new_user.put()
-            time.sleep(.2)
+            time.sleep(set_time)
             self.redirect('/forum.html')
 
     def check_user(self, user):
@@ -161,10 +160,12 @@ class Definition(Handler):
         if Definition.error:
             self.render("definitions.html", wordlist=word_list, login=Base.login,
                         user=Base.current_user, u_image=Base.current_avatar,
-                        error=Definition.error,navs_list=Base.navs_list)
+                        error=Definition.error, navs_list=Base.navs_list)
+            Definition.error = False
         else:
             self.render("definitions.html",  wordlist=word_list, login=Base.login,
-                        user=Base.current_user, u_image=Base.current_avatar,navs_list=Base.navs_list)
+                        user=Base.current_user, u_image=Base.current_avatar,
+                        navs_list=Base.navs_list)
 
     def post(self):
         word = cgi.escape(self.request.get('word'))
@@ -177,7 +178,7 @@ class Definition(Handler):
             # looks good now add to DB #
             define = Definitions(word=word, definition=definition)
             define.put()
-            time.sleep(.2)
+            time.sleep(set_time)
             Base.login = True
             self.redirect('/definitions.html')
         else:
@@ -191,7 +192,8 @@ class NotesData(Handler):
     def get(self):
         user = Base.current_user
         self.render("notes.html", login=Base.login,
-                    user=user, u_image=Base.current_avatar,navs_list=Base.navs_list)
+                    user=user, u_image=Base.current_avatar,
+                    navs_list=Base.navs_list)
 
 
 class ForumPage(Handler):
@@ -200,15 +202,14 @@ class ForumPage(Handler):
 
     def get(self):
         posts = ForumPost.query().order(ForumPost.date).fetch()
-        subjects = Subject_Main.query().order(Subject_Main.subject_id).fetch()
         total_posts = len(posts)
         if ForumPage.error is False:
             # looks good process page #
             debug('Total posts = {}'.format(total_posts))
+
             self.render("/forum.html",
                         post_list=posts,
-                        subjects=subjects,
-                        login=True,
+                        login=Base.login,
                         user=Base.current_user,
                         u_image=Base.current_avatar,
                         total_posts=total_posts,
@@ -218,8 +219,7 @@ class ForumPage(Handler):
             # errors on page so will show error flag #
             self.render("/forum.html",
                         post_list=posts,
-                        subjects=subjects,
-                        login=True,
+                        login=Base.login,
                         user=Base.current_user,
                         u_image=Base.current_avatar,
                         error=ForumPage.error,
@@ -230,19 +230,6 @@ class ForumPage(Handler):
 
     def post(self):
         # get current registered user and post #
-
-        # test to see if subject has already been posted #
-        # if so add current post under that subject title and unique_id #
-        # and update the current Base unique_id #
-
-        if self.request.get('subject_id') == '':
-            debug(' New subject_id  ')
-            subject_id = Base().set_post_id()
-        else:
-            debug(' Found subject_id ')
-            subject_id = self.request.get('subject_id')
-
-        subject = cgi.escape(self.request.get("subject"))
         post = cgi.escape(self.request.get("post"))
         poster = Base.current_user
         tag = Base.current_tag
@@ -251,21 +238,14 @@ class ForumPage(Handler):
 
         if post:
             # looks good add post to database #
-            subject_add = Subject_Main(subject=subject, subject_id=int(subject_id))
-            subject_add.put()
-            debug('--Subject added--')
-            forum_post = ForumPost(subject_id=int(subject_id),
-                                   subject=subject,
-                                   post=post,
-                                   poster=poster,
-                                   tag=tag,
-                                   avatar=avatar)
+            forum_post = ForumPost(post=post, poster=poster, tag=tag, avatar=avatar)
             forum_post.put()
             debug('Post added--')
             # for local #
-            time.sleep(.2)
+            time.sleep(set_time)
             Base.login = True
             self.redirect('/forum.html')
+
         else:
             # set error flag #
             ForumPage.error = 'Can not post a blank post..'
@@ -277,20 +257,39 @@ class MainPage(Handler):
     error = ''
 
     def get(self):
+
+        fetch_one = 1
+        is_logged = Base.login
+        if not is_logged:
+            self.redirect('/login.html')
+            return
+
+        latest_post = ForumPost.query().order(-ForumPost.date).fetch(fetch_one)
         # test to see if registered user is or is not logged in #
-        latest_post = ForumPost.query().order(-ForumPost.date).fetch(1)
-        debug('Navs_List = {}'.format(Base.navs_list))
-        if Base.login is False:
-            self.render("index.html", login=False, latest_post=latest_post,
-                        error=MainPage.error, navs_list=Base.navs_list)
+
+        debug('LOGOUT STATUS = {}'.format(is_logged))
+        if Base.current_user == '':
+            Base.login = False
+
+        if Base.login is False and MainPage.error is False:
+            debug('Both are False')
+            self.render("index.html", login=False, latest_post=latest_post, navs_list=Base.navs_list)
+
+        elif Base.login is False and MainPage.error:
+            debug('Contains and Error')
+            self.render("index.html", login=False, latest_post=latest_post, error=MainPage.error,
+                        navs_list=Base.navs_list)
+            MainPage.error = False
 
         else:
+            debug('Login is True!')
             self.render("index.html",
                         login=True,
                         user=Base.current_user,
                         u_image=Base.current_avatar,
                         latest_post=latest_post,
                         navs_list=Base.navs_list)
+            # MainPage.error = False
 
     def post(self):
 
@@ -298,14 +297,24 @@ class MainPage(Handler):
         qualify_user = cgi.escape(self.request.get("username"))
         qualify_pass = cgi.escape(self.request.get("password"))
 
-        # if user has valid creds then set login flag and user info#
-        if self.check_creds(qualify_user, qualify_pass):
-            self.render("index.html", login=True,
-                        user=Base.current_user, u_image=Base.current_avatar)
+        # if user has valid creds then set login flag and user info #
+        if qualify_user and qualify_pass:
+            if self.check_creds(qualify_user, qualify_pass):
+                MainPage.error = False
+                self.render("index.html", login=True,
+                            user=Base.current_user, u_image=Base.current_avatar,
+                            navs_list=Base.navs_list)
+
+
+            else:
+                # no creds did not validate, set error flag #
+                MainPage.error = 'You\'ve entered the wrong name or password..'
+                self.render("index.html", login=False, error=MainPage.error,
+                            navs_list=Base.navs_list)
+                MainPage.error = False
+
         else:
-            # no creds did not validate, set error flag #
-            MainPage.error = 'You\'ve entered the wrong name or password..'
-            self.render("index.html", login=False, error=MainPage.error)
+            self.render("index.html", login=Base.login, navs_list=Base.navs_list)
 
     def check_creds(self, user, password):
         # qualify user against user info in database#
@@ -319,10 +328,20 @@ class MainPage(Handler):
                 return True
 
 
+class Login(Handler):
+    def get(self):
+        Base.login = False
+        self.render("login.html", login=Base.login, navs_list=Base.navs_list)
+
+    def post(self):
+        Base.login = False
+        self.render("login.html", navs_list=Base.navs_list)
+
+
 class Base(Handler):
     # Base Template Handler #
     query_users = Users.query()
-    subj_unique_id = 1000
+
     # Initialize base user info #
     login = False
     current_user = ''
@@ -336,25 +355,8 @@ class Base(Handler):
     def get(self):
         self.render("base.html", login=Base.login)
 
-
     def post(self):
         pass
-
-    def set_post_id(self):
-        # sets unique id #
-        # get latest post #
-        post_id = ForumPost.query().order(-ForumPost.date).fetch(1)
-        # check to see if there is a subject_id #
-        if post_id[0].subject_id >= 1000:
-            p_id = post_id[0].subject_id
-            p_id += 1
-            debug('post_id {}'.format(p_id))
-            return p_id
-        # if not set to default of subj_unique_id #
-        # should only run once !! #
-        else:
-            p_id = Base.subj_unique_id
-            return p_id
 
 
 router = [('/', MainPage),
@@ -364,6 +366,7 @@ router = [('/', MainPage),
           ('/register.html', Register),
           ('/forum.html', ForumPage),
           ('/base.html', Base),
+          ('/login.html', Login)
           ]
 app = webapp2.WSGIApplication(router, debug=True)
 

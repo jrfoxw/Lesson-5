@@ -1,7 +1,53 @@
 {% extends "base.html" %}
+
+
 {% block content %}
 
-jgh
+    <div class="main">
+        <h2>WELCOME TO THE DRAGONS CAVE</h2>
+        <div id='latest_post'>
+		<table>
+		{% for post in latest_post %}
 
+		    <tr>
+		    	<td>{{ post.poster }}</td>
+		    </tr>
+		    <tr>
+		    	<td><img class='small_image' src='{{post.avatar}}'></td>
+		    	<td>&quot;{{ post.post }}&quot;<td>
+		    </tr>
+		    <br>
+
+		 </table>
+            {% endfor %}
+	    </div>
+        <b> Please <a href="/login.html">login</a> or <a href="/register.html">register</a> to continue!</b>
+        <br>
+        <span id='error'> {{ error }} </span>
+    </div>
+
+{% block login %}
+{% endblock %}
+{% block logout %}
+{% endblock %}
+ <div class ="login">
+
+                        <form method="post" action="/">
+                        <table>
+                            <tr>
+                                <td><label>User:</label></td>
+                                <td><input type="text" name="username"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><label>Pass:</label></td>
+                                <td><input type="password" name="password"></td>
+                                <td><input type="submit" value="login"></td>
+                            </tr>
+                        </table>
+                    </form>
+
+
+                    </div>
 
 {% endblock %}

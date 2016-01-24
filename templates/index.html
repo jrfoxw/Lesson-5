@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-}
+{% block logout %}
+{% endblock logout %}
 {% block content %}
 
 <div class="main">
@@ -19,20 +20,22 @@
 		    	<td>&quot;{{ post.post }}&quot;<td>
 		    </tr>
 		    <br>
-		    
-		 </table>   
+
+		 </table>
 	</div>
 
 	{% endfor %}
     <br>
 {% if login %}
     <b> <i>{{ user }}</i> is logged in!</b>
-    
-    
+
+
 {% else %}
-    <b> Please login or <a href="/register.html">register</a> to continue!</b>
+    <b> Please <a href="/login.html">login</a> or <a href="/register.html">register</a> to continue!</b>
 {% endif %}
 	<br>
-	<span id='error'> {{ error }} </span> 
+	{% if error %}
+	<span id='error'> {{ error }} </span>
+	{% endif %}
 </div>
 {% endblock %}
